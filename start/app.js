@@ -17,6 +17,7 @@ const providers = [
   "@adonisjs/cors/providers/CorsProvider",
   "@adonisjs/lucid/providers/LucidProvider",
   "lucid-mongo/providers/LucidMongoProvider",
+  "@adonisjs/mail/providers/MailProvider",
 ];
 
 /*
