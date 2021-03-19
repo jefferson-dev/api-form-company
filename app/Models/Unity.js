@@ -4,8 +4,8 @@
 const Model = use("Model");
 
 class Unity extends Model {
-  user() {
-    return this.referMany("App/Models/User");
+  users() {
+    return this.hasMany("App/Models/User");
   }
 }
 

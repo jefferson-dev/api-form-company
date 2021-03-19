@@ -1,4 +1,5 @@
 "use strict";
+const mongoose = require("mongoose");
 const User = use("App/Models/User");
 
 class UserController {
@@ -36,7 +37,10 @@ class UserController {
         },
       });
     }
-    const user = await User.create({ ...data, status: true });
+    const user = await User.create({
+      ...data,
+      unity_id: mongoose.Types.ObjectId(data.unity_id),
+    });
     return user;
   }
 
@@ -50,7 +54,10 @@ class UserController {
         "active",
         "unity_id",
       ]);
-      user.merge(data);
+      user.merge({
+        ...data,
+        unity_id: mongoose.Types.ObjectId(data.unity_id),
+      });
       await user.save();
       return user;
     }
