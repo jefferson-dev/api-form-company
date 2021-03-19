@@ -32,6 +32,7 @@ class UserController {
       "password",
       "active",
       "unity_id",
+      "type",
     ]);
     const userData = await User.where({ email: data.email }).first();
     if (userData) {
@@ -65,6 +66,7 @@ class UserController {
         "password",
         "active",
         "unity_id",
+        "type",
       ]);
       if (data.unity_id) {
         const unity = await Unity.where({ _id: data.unity_id }).first();
