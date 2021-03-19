@@ -8,11 +8,12 @@ class CategoryController {
         const categories = Category.where({
           name: { $regex: new RegExp(`.*${data.name}.*`) },
         })
+          .with("forms")
           .sort("-name")
           .fetch();
         return categories;
       }
-      const categories = Category.fetch();
+      const categories = Category.with("forms").fetch();
       return categories;
     } catch (err) {
       console.log(err);
@@ -44,7 +45,9 @@ class CategoryController {
   }
 
   async show({ params }) {
-    const category = await Category.where({ _id: params.id }).firstOrFail();
+    const category = await Category.where({ _id: params.id })
+      .with("forms")
+      .firstOrFail();
 
     return category;
   }

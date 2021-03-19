@@ -17,4 +17,16 @@ Route.group(() => {
   Route.get("users/:id", "UserController.show");
   Route.put("users/:id", "UserController.update");
   Route.delete("users/:id", "UserController.destroy");
+
+  Route.get("category", "CategoryController.index");
+  Route.get("category/:id", "CategoryController.show");
+  Route.put("category/:id", "CategoryController.update");
+  Route.delete("category/:id", "CategoryController.destroy");
+  Route.post("category", "CategoryController.store");
+
+  Route.get("form", "FormController.index");
+  Route.get("form/:id", "FormController.show");
+  Route.put("form/:id", "FormController.update");
+  Route.delete("form/:id", "FormController.destroy");
+  Route.post("form", "FormController.store");
 }).middleware("auth");
