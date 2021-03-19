@@ -41,6 +41,10 @@ class User extends Model {
   unity() {
     return this.belongsTo("App/Models/Unity");
   }
+
+  answer() {
+    return this.hasMany("App/Models/Answer");
+  }
 }
 
 module.exports = User;

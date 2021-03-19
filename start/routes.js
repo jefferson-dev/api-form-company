@@ -29,4 +29,10 @@ Route.group(() => {
   Route.put("form/:id", "FormController.update");
   Route.delete("form/:id", "FormController.destroy");
   Route.post("form", "FormController.store");
+
+  Route.get("answer", "AnswerController.index");
+  Route.get("answer/:id", "AnswerController.show");
+  Route.put("answer/:id", "AnswerController.update");
+  Route.delete("answer/:id", "AnswerController.destroy");
+  Route.post("answer", "AnswerController.store");
 }).middleware("auth");

@@ -12,10 +12,12 @@ class FormController {
           name: { $regex: new RegExp(`.*${data.name}.*`) },
         })
           .sort("-name")
+          .with("answers")
+          .with("category")
           .fetch();
         return forms;
       }
-      const forms = Form.all();
+      const forms = Form.with("answers").with("category").fetch();
       return forms;
     } catch (err) {
       console.log(err);
@@ -55,6 +57,7 @@ class FormController {
   async show({ params }) {
     const form = await Form.where({ _id: params.id })
       .with("category")
+      .with("answers")
       .firstOrFail();
 
     return form;

@@ -1,6 +1,7 @@
 "use strict";
 const mongoose = require("mongoose");
 const User = use("App/Models/User");
+const Unity = use("App/Models/Unity");
 
 class UserController {
   async index({ request }) {
@@ -11,10 +12,12 @@ class UserController {
           name: { $regex: new RegExp(`.*${data.name}.*`) },
         })
           .sort("-name")
+          .with("unity")
+          .with("answer")
           .fetch();
         return users;
       }
-      const users = User.all();
+      const users = User.with("answer").with("unity").fetch();
       return users;
     } catch (err) {
       console.log(err);
@@ -37,6 +40,14 @@ class UserController {
         },
       });
     }
+    const unity = await Unity.where({ _id: data.unity_id }).first();
+    if (!unity) {
+      return response.status(400).send({
+        error: {
+          message: "Unidade selecionada não existe.",
+        },
+      });
+    }
     const user = await User.create({
       ...data,
       unity_id: mongoose.Types.ObjectId(data.unity_id),
@@ -45,7 +56,7 @@ class UserController {
   }
 
   async update({ params, request }) {
-    const user = await User.where({ _id: params.id }).first();
+    const user = await User.where({ _id: params.id }).firstOrFail();
     if (user) {
       const data = request.only([
         "name",
@@ -54,6 +65,14 @@ class UserController {
         "active",
         "unity_id",
       ]);
+      const unity = await Unity.where({ _id: data.unity_id }).first();
+      if (!unity) {
+        return response.status(400).send({
+          error: {
+            message: "Unidade selecionada não existe.",
+          },
+        });
+      }
       user.merge({
         ...data,
         unity_id: mongoose.Types.ObjectId(data.unity_id),
@@ -66,6 +85,7 @@ class UserController {
   async show({ params }) {
     const user = await User.where({ _id: params.id })
       .with("unity")
+      .with("answer")
       .firstOrFail();
 
     return user;

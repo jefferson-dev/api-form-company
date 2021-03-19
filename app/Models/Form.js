@@ -7,8 +7,13 @@ class Form extends Model {
   static get objectIDs() {
     return ["_id", "category_id"];
   }
+
   category() {
     return this.belongsTo("App/Models/Category");
+  }
+
+  answers() {
+    return this.hasMany("App/Models/Answer");
   }
 }
 
