@@ -5,10 +5,12 @@ const Schema = use("Schema");
 
 class UnitySchema extends Schema {
   up() {
-    this.create("unities", (collection) => {
-      collection.index("name_index", { name: 1 });
-      collection.index("active_index", { active: 1 });
-    });
+    this.create('unities', table => {
+      table.increments()
+      table.string('name', 40).notNullable().unique()
+      table.boolean('active').notNullable().defaultTo(false)
+      table.timestamps()
+    })
   }
 
   down() {

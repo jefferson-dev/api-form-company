@@ -5,10 +5,12 @@ const Schema = use("Schema");
 
 class CategorySchema extends Schema {
   up() {
-    this.create("categories", (collection) => {
-      collection.index("name_index", { name: 1 });
-      collection.index("active_index", { active: 1 });
-    });
+    this.create('categories', table => {
+      table.increments()
+      table.string('name', 40).notNullable().unique()
+      table.boolean('active').notNullable().defaultTo(false)
+      table.timestamps()
+    })
   }
 
   down() {

@@ -43,16 +43,16 @@ class UserController {
       });
     }
     const unity = await Unity.where({ _id: data.unity_id }).first();
-    if (!unity) {
-      return response.status(400).send({
-        error: {
-          message: "Unidade selecionada não existe.",
-        },
+    if (unity) {
+      const user = await User.create({
+        ...data,
+        unity_id: mongoose.Types.ObjectId(data.unity_id),
       });
+      return user;
     }
     const user = await User.create({
       ...data,
-      unity_id: mongoose.Types.ObjectId(data.unity_id),
+      unity_id: null,
     });
     return user;
   }

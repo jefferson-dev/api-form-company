@@ -5,12 +5,14 @@ const Schema = use("Schema");
 
 class FormSchema extends Schema {
   up() {
-    this.create("forms", (collection) => {
-      collection.index("category_id_index", { category_id: 1 });
-      collection.index("name_index", { name: 1 });
-      collection.index("questions_index", { questions: 1 });
-      collection.index("active_index", { active: 1 });
-    });
+    this.create('forms', table => {
+      table.increments()
+      table.integer('category_id').unsigned().references('id').inTable('categories')
+      table.string('name', 40).notNullable().unique()
+      table.string('questions', 40).notNullable()
+      table.boolean('active').notNullable().defaultTo(false)
+      table.timestamps()
+    })
   }
 
   down() {

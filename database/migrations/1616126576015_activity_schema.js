@@ -5,13 +5,15 @@ const Schema = use("Schema");
 
 class ActivitySchema extends Schema {
   up() {
-    this.create("activities", (collection) => {
-      collection.index("user_id_index", { user_id: 1 });
-      collection.index("date_index", { date: 1 });
-      collection.index("hour_start_index", { hour_start: 1 });
-      collection.index("hour_end_index", { hour_end: 1 });
-      collection.index("active_index", { active: 1 });
-    });
+    this.create('activities', table => {
+      table.increments()
+      table.integer('user_id').unsigned().references('id').inTable('users')
+      table.date('date')
+      table.time('hour_start')
+      table.time('hour_end')
+      table.boolean('active').notNullable().defaultTo(false)
+      table.timestamps()
+    })
   }
 
   down() {
