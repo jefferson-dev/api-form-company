@@ -1,6 +1,8 @@
 "use strict";
+
 const mongoose = require("mongoose");
 const Form = use("App/Models/Form");
+
 class FormController {
   async index({ request }) {
     try {
@@ -40,7 +42,7 @@ class FormController {
   async update({ params, request }) {
     const form = await Form.where({ _id: params.id }).firstOrFail();
     if (form) {
-      request.only(["name", "questions", "active", "category_id"]);
+      const data = request.only(["name", "questions", "active", "category_id"]);
       form.merge({
         ...data,
         category_id: mongoose.Types.ObjectId(data.category_id),
@@ -52,7 +54,7 @@ class FormController {
 
   async show({ params }) {
     const form = await Form.where({ _id: params.id })
-      .with("unity")
+      .with("category")
       .firstOrFail();
 
     return form;
