@@ -35,4 +35,10 @@ Route.group(() => {
   Route.put("answer/:id", "AnswerController.update");
   Route.delete("answer/:id", "AnswerController.destroy");
   Route.post("answer", "AnswerController.store");
+
+  Route.get("activity", "ActivityController.index");
+  Route.get("activity/:id", "ActivityController.show");
+  Route.put("activity/:id", "ActivityController.update");
+  Route.delete("activity/:id", "ActivityController.destroy");
+  Route.post("activity", "ActivityController.store");
 }).middleware("auth");

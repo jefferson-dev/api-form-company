@@ -45,6 +45,10 @@ class User extends Model {
   answer() {
     return this.hasMany("App/Models/Answer");
   }
+
+  activity() {
+    return this.hasMany("App/Models/Activity");
+  }
 }
 
 module.exports = User;

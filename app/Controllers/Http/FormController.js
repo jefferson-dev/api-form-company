@@ -2,6 +2,7 @@
 
 const mongoose = require("mongoose");
 const Form = use("App/Models/Form");
+const Category = use("App/Models/Category");
 
 class FormController {
   async index({ request }) {
@@ -45,9 +46,26 @@ class FormController {
     const form = await Form.where({ _id: params.id }).firstOrFail();
     if (form) {
       const data = request.only(["name", "questions", "active", "category_id"]);
+      if (data.category_id) {
+        const category = await Category.where({
+          _id: data.category_id,
+        }).first();
+        if (!category) {
+          return response.status(400).send({
+            error: {
+              message: "Categoria selecionada não existe.",
+            },
+          });
+        }
+        form.merge({
+          ...data,
+          category_id: mongoose.Types.ObjectId(data.category_id),
+        });
+        await form.save();
+        return form;
+      }
       form.merge({
         ...data,
-        category_id: mongoose.Types.ObjectId(data.category_id),
       });
       await form.save();
       return form;

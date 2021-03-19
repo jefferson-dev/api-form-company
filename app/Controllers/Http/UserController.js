@@ -14,10 +14,11 @@ class UserController {
           .sort("-name")
           .with("unity")
           .with("answer")
+          .with("activity")
           .fetch();
         return users;
       }
-      const users = User.with("answer").with("unity").fetch();
+      const users = User.with("answer").with("activity").with("unity").fetch();
       return users;
     } catch (err) {
       console.log(err);
@@ -65,17 +66,24 @@ class UserController {
         "active",
         "unity_id",
       ]);
-      const unity = await Unity.where({ _id: data.unity_id }).first();
-      if (!unity) {
-        return response.status(400).send({
-          error: {
-            message: "Unidade selecionada não existe.",
-          },
+      if (data.unity_id) {
+        const unity = await Unity.where({ _id: data.unity_id }).first();
+        if (!unity) {
+          return response.status(400).send({
+            error: {
+              message: "Unidade selecionada não existe.",
+            },
+          });
+        }
+        user.merge({
+          ...data,
+          unity_id: mongoose.Types.ObjectId(data.unity_id),
         });
+        await user.save();
+        return user;
       }
       user.merge({
         ...data,
-        unity_id: mongoose.Types.ObjectId(data.unity_id),
       });
       await user.save();
       return user;
@@ -86,6 +94,7 @@ class UserController {
     const user = await User.where({ _id: params.id })
       .with("unity")
       .with("answer")
+      .with("activity")
       .firstOrFail();
 
     return user;
